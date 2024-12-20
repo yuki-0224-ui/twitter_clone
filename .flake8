@@ -1,0 +1,12 @@
+[flake8]
+exclude = 
+    .git,
+    __pycache__,
+    migrations,
+    static,
+    media,
+    venv,
+    env
+
+max-line-length = 119
+extend-ignore = E203
