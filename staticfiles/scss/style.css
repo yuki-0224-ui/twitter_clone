@@ -1,0 +1,3 @@
+.btn-primary{background-color:#1d9bf0;border:none}.btn-primary:hover{background-color:#1a8cd8}.logo-x{width:150px;height:150px}@media (min-width: 768px){.logo-x{width:450px;height:450px}}.toast.show{animation:slideIn 0.3s ease-out}@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/*# sourceMappingURL=style.css.map */
