@@ -1,0 +1,40 @@
+$twitter-blue: #1d9bf0;
+$twitter-blue-hover: #1a8cd8;
+$twitter-border: #2f3336;
+
+.btn-primary {
+  background-color: $twitter-blue;
+  border: none;
+
+  &:hover {
+    background-color: $twitter-blue-hover;
+  }
+}
+
+.logo-x {
+  width: 150px;
+  height: 150px;
+
+  @media (min-width: 768px) {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+.toast {
+  &.show {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
