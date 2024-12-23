@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "ログイン" %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid bg-black min-vh-100 text-white">
+        <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                        <div class="card bg-black border-secondary mt-5">
+                                <div class="card-body p-4">
+                                        <div class="text-start mb-4">
+                                                <a href="{% url 'tweets:home' %}"
+                                                        class="btn btn-outline-light rounded-pill">
+                                                        ← ホームに戻る
+                                                </a>
+                                        </div>
+
+                                        <h1 class="text-center h3 mb-4">ログイン</h1>
+
+                                        <form class="login" method="POST" action="{% url 'account_login' %}">
+                                                {% csrf_token %}
+
+                                                {% if form.non_field_errors %}
+                                                <div class="alert alert-danger">
+                                                        {% for error in form.non_field_errors %}
+                                                        {{ error }}
+                                                        {% endfor %}
+                                                </div>
+                                                {% endif %}
+
+                                                {% for field in form %}
+                                                <div class="mb-3">
+                                                        <label for="{{ field.id_for_label }}" class="form-label">
+                                                                {{ field.label }}
+                                                        </label>
+                                                        {{ field }}
+                                                </div>
+                                                {% endfor %}
+
+                                                <button class="btn btn-primary w-100 rounded-pill mb-3"
+                                                        type="submit">ログイン</button>
+                                        </form>
+
+                                        <div class="text-center">
+                                                <p class="mb-0">アカウントをお持ちでない場合は
+                                                        <a href="{% url 'account_signup' %}"
+                                                                class="text-primary text-decoration-none">新規登録</a>
+                                                </p>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
+{% endblock %}

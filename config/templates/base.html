@@ -1,16 +1,51 @@
-{% load i18n static %}
+{% load i18n static sass_tags %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
-<html lang="{{ LANGUAGE_CODE|default:"en-us" }}">
-  <head>
+<html lang="{{ LANGUAGE_CODE|default:'en-us' }}" data-bs-theme="dark">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>{% block title %}{% endblock %}</title>
-  </head>
-  <body>
-    {% block content %}{% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/svg+xml" href="{% static 'assets/x-favicon-centered.svg' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% sass_src 'scss/style.scss' %}" rel="stylesheet" type="text/css" />
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    {% if messages %}
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; max-width: 400px;">
+        {% for message in messages %}
+        {% if not message.used %}
+        <div class="toast show mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header {% if message.tags == 'success' %}bg-success{% elif message.tags == 'error' %}bg-danger{% elif message.tags == 'warning' %}bg-warning{% else %}bg-info{% endif %} text-white">
+                <strong class="me-auto">
+                    {% if message.tags == 'success' %}
+                        成功
+                    {% elif message.tags == 'error' %}
+                        エラー
+                    {% elif message.tags == 'warning' %}
+                        警告
+                    {% else %}
+                        お知らせ
+                    {% endif %}
+                </strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body bg-dark text-white">
+                {{ message }}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     {% block javascripts %}{% endblock javascripts %}
-  </body>
+</body>
 </html>
