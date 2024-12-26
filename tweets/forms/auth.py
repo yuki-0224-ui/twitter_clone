@@ -1,5 +1,6 @@
 from django import forms
 from allauth.account.forms import SignupForm, LoginForm
+from django.contrib.auth import get_user_model
 
 
 class CustomSignupForm(SignupForm):
@@ -53,6 +54,25 @@ class CustomSignupForm(SignupForm):
         })
         self.fields['password2'].label = 'パスワード（確認）'
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        if email:
+            User = get_user_model()
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError("このメールアドレスは既に登録されています。")
+        return email
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        if username:
+            User = get_user_model()
+            if User.objects.filter(username__iexact=username).exists():
+                raise forms.ValidationError("このユーザー名は既に使用されています。")
+
+        return username
+
     def save(self, request):
         user = super().save(request)
         user.phone_number = self.cleaned_data.get('phone_number')
@@ -64,6 +84,7 @@ class CustomSignupForm(SignupForm):
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.fields['login'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': 'ユーザー名またはメールアドレスを入力'
