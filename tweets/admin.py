@@ -14,8 +14,8 @@ class CustomUserAdmin(UserAdmin):
             'location',
             'website',
             'date_of_birth',
-            'profile_image_url',
-            'header_image_url'
+            'profile_image',
+            'header_image'
         )}),
         ('権限', {'fields': ('is_active', 'is_staff',
          'is_superuser', 'groups', 'user_permissions')}),
