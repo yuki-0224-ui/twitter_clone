@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
     'sass_processor',
     'tweets.apps.TweetsConfig',
 ]
@@ -160,3 +161,17 @@ STATICFILES_FINDERS = [
 
 SASS_PRECISION = 8
 SASS_OUTPUT_STYLE = 'compressed'
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'SCOPE': [
+            'user',
+            'email',
+        ],
+        'EMAIL_AUTHENTICATION': True,
+        'VERIFIED_EMAIL': True,
+    }
+}
