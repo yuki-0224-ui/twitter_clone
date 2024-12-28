@@ -1,0 +1,11 @@
+<div class="d-flex align-items-center mb-1">
+        <div class="d-flex align-items-center me-2 text-truncate">
+                <span class="fw-bold text-white me-1 text-truncate">{{ user.display_name }}</span>
+                <span class="text-secondary text-truncate">@{{ user.username }}</span>
+        </div>
+        {% if show_timestamp %}
+        <div class="text-secondary flex-shrink-0">
+                · {{ timestamp|timesince }}
+        </div>
+        {% endif %}
+</div>
