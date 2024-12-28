@@ -1,0 +1,33 @@
+<div class="row min-vh-100">
+        <!-- ロゴ部分 -->
+        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mb-4 mb-md-0">
+                <svg viewBox="0 0 24 24" class="logo-x text-white" style="width: 300px; height: 300px;">
+                        <path fill="currentColor"
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                        </path>
+                </svg>
+        </div>
+
+        <!-- 登録フォーム部分 -->
+        <div class="col-12 col-md-6 d-flex align-items-center">
+                <div class="px-4 w-100" style="max-width: 450px;">
+                        <h1 class="display-6 fw-bold mb-3">すべての話題が、ここに。</h1>
+                        <h2 class="fs-4 mb-5">今すぐ参加しましょう。</h2>
+                        <a href="{% url 'account_signup' %}" class="btn btn-primary rounded-pill w-100 mb-3 fw-medium">
+                                アカウントを作成
+                        </a>
+                        <p class="text-secondary small mb-5">
+                                アカウントを登録することにより、
+                                <a href="#" class="text-primary text-decoration-none">利用規約</a>と
+                                <a href="#" class="text-primary text-decoration-none">プライバシーポリシー</a>
+                                （Cookieの使用を含む）に同意したことになります。
+                        </p>
+                        <div class="mb-5">
+                                <h3 class="fs-6 fw-bold mb-3">アカウントをお持ちの場合</h3>
+                                <a href="{% url 'account_login' %}" class="btn btn-outline-light rounded-pill w-100">
+                                        ログイン
+                                </a>
+                        </div>
+                </div>
+        </div>
+</div>
