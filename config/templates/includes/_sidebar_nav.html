@@ -1,0 +1,60 @@
+<nav class="nav flex-column pt-3">
+        <!-- ホームメニュー -->
+        <a class="nav-link text-white fs-5 mb-2" href="{% url 'tweets:home' %}">
+                <i class="bi bi-house-fill me-2"></i>
+                <span class="d-none d-md-inline">ホーム</span>
+        </a>
+
+        <!-- 通知メニュー -->
+        <a class="nav-link text-white fs-5 mb-2" href="#">
+                <i class="bi bi-bell me-2"></i>
+                <span class="d-none d-md-inline">通知</span>
+        </a>
+
+        <!-- メッセージメニュー -->
+        <a class="nav-link text-white fs-5 mb-2" href="#">
+                <i class="bi bi-envelope me-2"></i>
+                <span class="d-none d-md-inline">メッセージ</span>
+        </a>
+
+        <!-- ブックマークメニュー -->
+        <a class="nav-link text-white fs-5 mb-2" href="#">
+                <i class="bi bi-bookmark me-2"></i>
+                <span class="d-none d-md-inline">ブックマーク</span>
+        </a>
+
+        <!-- プロフィールメニュー -->
+        <a class="nav-link text-white fs-5 mb-4" href="#">
+                <i class="bi bi-person me-2"></i>
+                <span class="d-none d-md-inline">プロフィール</span>
+        </a>
+
+        <!-- ポスト作成ボタン -->
+        <div class="px-3 w-100 mb-5">
+                <button class="btn btn-primary rounded-pill w-100 d-none d-md-block">
+                        ポストする
+                </button>
+        </div>
+        <button class="btn btn-primary rounded-circle p-2 d-md-none"
+                style="width: 40px; height: 40px; margin-left: 8px;">
+                <i class="bi bi-plus-lg"></i>
+        </button>
+
+        <!-- ユーザー情報 -->
+        <div class="mb-3 mt-5 ms-2">
+                <a href="#" class="text-decoration-none">
+                        <div class="d-flex align-items-center">
+                                {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" class="rounded-circle" width="40" height="40"
+                                        alt="プロフィール画像">
+                                {% else %}
+                                <div class="rounded-circle bg-secondary" style="width: 40px; height: 40px;"></div>
+                                {% endif %}
+                                <div class="ms-2 d-none d-md-block">
+                                        <div class="text-white fw-bold">{{ user.display_name }}</div>
+                                        <div class="text-secondary">@{{ user.username }}</div>
+                                </div>
+                        </div>
+                </a>
+        </div>
+</nav>
