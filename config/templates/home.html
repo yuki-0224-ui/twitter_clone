@@ -2,44 +2,101 @@
 {% block title %}X - すべての話題が、ここに。{% endblock %}
 
 {% block content %}
-<div class="container-fluid bg-black min-vh-100 text-white">
-    {% if user.is_authenticated %}
-    <div class="row">
-        <div class="col-12 p-3 border-bottom border-secondary">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h4 class="mb-0">{{ user.display_name }}</h4>
-                    <small class="text-secondary">@{{ user.username }}</small>
+<div class="container-fluid">
+        {% if user.is_authenticated %}
+        <div class="row">
+                <!-- サイドバー -->
+                <div class="col-2 col-md-3 border-end border-secondary">
+                        <div class="position-fixed d-flex flex-column align-items-center align-items-md-end pe-3"
+                                style="width: inherit; max-width: inherit;">
+                                {% include "includes/_sidebar_nav.html" with user=user %}
+                        </div>
                 </div>
-                <div>
-                    <a href="{% url 'account_logout' %}" class="btn btn-outline-danger rounded-pill">ログアウト</a>
+
+                <!-- メインコンテンツ -->
+                <div class="col-10 col-md-6 min-vh-100 border-secondary px-0">
+                        <!-- タブナビゲーション -->
+                        <div class="border-bottom border-secondary position-fixed bg-black"
+                                style="z-index: 1000; width: inherit; max-width: inherit;">
+                                <div class="d-flex">
+                                        <a href="?tab=recommended"
+                                                class="flex-grow-1 text-center text-decoration-none py-3 {% if current_tab == 'recommended' %}border-bottom border-primary{% endif %}">
+                                                <span
+                                                        class="{% if current_tab == 'recommended' %}text-white fw-bold{% else %}text-secondary{% endif %}">おすすめ</span>
+                                        </a>
+                                        <a href="?tab=following"
+                                                class="flex-grow-1 text-center text-decoration-none py-3 {% if current_tab == 'following' %}border-bottom border-primary{% endif %}">
+                                                <span
+                                                        class="{% if current_tab == 'following' %}text-white fw-bold{% else %}text-secondary{% endif %}">フォロー中</span>
+                                        </a>
+                                </div>
+                        </div>
+                        <!-- スペーサー (タブの高さ分) -->
+                        <div style="height: 49px;"></div>
+
+                        <!-- メインコンテンツエリア -->
+                        <div>
+                                <!-- 投稿フォーム -->
+                                <div class="p-3 border-bottom border-secondary">
+                                        <div class="d-flex">
+                                                <div class="me-3">
+                                                        {% if user.profile_image %}
+                                                        <img src="{{ user.profile_image.url }}" class="rounded-circle"
+                                                                width="48" height="48" alt="プロフィール画像">
+                                                        {% else %}
+                                                        <div class="rounded-circle bg-secondary"
+                                                                style="width: 48px; height: 48px;"></div>
+                                                        {% endif %}
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                        <textarea class="form-control bg-black text-white border-0"
+                                                                rows="3" placeholder="いまどうしてる？"></textarea>
+                                                        <div
+                                                                class="d-flex justify-content-between align-items-center mt-2">
+                                                                <div>
+                                                                        <button class="btn btn-link text-primary p-1">
+                                                                                <i class="bi bi-image"></i>
+                                                                        </button>
+                                                                </div>
+                                                                <button class="btn btn-primary rounded-pill px-4">
+                                                                        ポストする
+                                                                </button>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <!-- タイムライン -->
+                                <div class="tweet-list">
+                                        {% for tweet in tweets %}
+                                        {% include "includes/_tweet_card.html" with tweet=tweet %}
+                                        {% empty %}
+                                        <div class="p-3 text-center text-secondary">
+                                                {% if current_tab == 'following' %}
+                                                フォローしているユーザーのツイートはありません
+                                                {% else %}
+                                                ツイートはありません
+                                                {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                </div>
+
+                                <!-- ページネーション -->
+                                {% include "includes/_pagination.html" %}
+                        </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-12 p-3">
-            <button class="btn btn-primary rounded-pill w-100">つぶやく</button>
-        </div>
-    </div>
-    {% else %}
-    <div class="row min-vh-100">
-        <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mb-4 mb-md-0">
-            <svg viewBox="0 0 24 24" class="logo-x text-white">
-                <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-            </svg>
-        </div>
-        <div class="col-12 col-md-6 d-flex align-items-center">
-            <div class="px-4 w-100" style="max-width: 450px;">
-                <h1 class="display-6 fw-bold mb-3">すべての話題が、ここに。</h1>
-                <h2 class="fs-4 mb-5">今すぐ参加しましょう。</h2>
-                <a href="{% url 'account_signup' %}" class="btn btn-primary rounded-pill w-100 mb-3 fw-medium">アカウントを作成</a>
-                <p class="text-secondary small mb-5">アカウントを登録することにより、<a href="#" class="text-primary text-decoration-none">利用規約</a>と<a href="#" class="text-primary text-decoration-none">プライバシーポリシー</a>（Cookieの使用を含む）に同意したことになります。</p>
-                <div class="mb-5">
-                    <h3 class="fs-6 fw-bold mb-3">アカウントをお持ちの場合</h3>
-                    <a href="{% url 'account_login' %}" class="btn btn-outline-light rounded-pill w-100">ログイン</a>
+
+                <div class="col-md-3 d-none d-md-block border-start border-secondary border-end border-secondary">
                 </div>
-            </div>
+
         </div>
-    </div>
-    {% endif %}
+        {% else %}
+        <!-- 未ログイン時のレイアウト -->
+        {% include "includes/_landing_page.html" %}
+        {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 {% endblock %}
