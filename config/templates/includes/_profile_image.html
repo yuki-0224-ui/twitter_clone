@@ -1,0 +1,5 @@
+{% if user.profile_image %}
+<img src="{{ user.profile_image.url }}" class="rounded-circle" width="{{ size }}" height="{{ size }}" alt="プロフィール画像">
+{% else %}
+<div class="rounded-circle bg-secondary" style="width: {{ size }}px; height: {{ size }}px;"></div>
+{% endif %}

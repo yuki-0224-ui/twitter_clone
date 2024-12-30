@@ -11,7 +11,39 @@
     <link href="{% sass_src 'scss/style.scss' %}" rel="stylesheet" type="text/css" />
     {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="bg-black text-white">
+    <header class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-secondary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'tweets:home' %}">
+                <svg viewBox="0 0 24 24" class="logo-x" style="width: 30px; height: 30px;">
+                    <path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                </svg>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <span class="nav-link">@{{ user.username }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'account_logout' %}" class="btn btn-outline-danger rounded-pill">ログアウト</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item me-2">
+                            <a href="{% url 'account_login' %}" class="btn btn-outline-light rounded-pill">ログイン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'account_signup' %}" class="btn btn-primary rounded-pill">新規登録</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </header>
+
     {% if messages %}
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050; max-width: 400px;">
         {% for message in messages %}
@@ -39,9 +71,11 @@
         {% endfor %}
     </div>
     {% endif %}
+
     <main>
         {% block content %}{% endblock %}
     </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
