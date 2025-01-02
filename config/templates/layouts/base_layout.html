@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- 左サイドバー -->
+        <div class="col-2 col-md-3 border-end border-secondary">
+            <div class="position-fixed d-flex flex-column align-items-center align-items-md-end pe-3"
+                style="width: inherit; max-width: inherit;">
+                {% include "includes/_sidebar_nav.html" with user=user %}
+            </div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="col-10 col-md-6 min-vh-100 border-end border-secondary position-relative px-0">
+            <!-- 固定ヘッダー -->
+            <div class="position-fixed bg-black border-bottom border-secondary"
+                 style="z-index: 1000; width: inherit; max-width: inherit;">
+                {% block fixed_header %}{% endblock %}
+            </div>
+<!-- スペーサー (固定ヘッダーの高さ分) -->
+            {% block header_spacer %}
+            <div style="height: 53px;"></div>
+            {% endblock %}
+
+            <!-- メインコンテンツエリア -->
+            <div class="main-content">
+                {% block main_content %}
+                <!-- 各ページでメインコンテンツを実装 -->
+                {% endblock %}
+            </div>
+        </div>
+
+        <!-- 右サイドバー -->
+        <div class="col-md-3 d-none d-md-block border-end border-secondary">
+            {% block right_sidebar %}
+            <!-- 各ページで右サイドバーの内容を実装 -->
+            {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<style>
+    .tab-border-primary {
+        border-bottom: 2px solid rgb(29, 155, 240) !important;
+    }
+</style>
+{% endblock %}
