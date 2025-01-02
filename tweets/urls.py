@@ -7,4 +7,5 @@ urlpatterns = [
     path('accounts/login/', views.login, name='account_login'),
     path('accounts/signup/', views.signup, name='account_signup'),
     path('accounts/logout/', views.logout, name='account_logout'),
+    path('@<str:username>/', views.profile, name='profile'),
 ]
