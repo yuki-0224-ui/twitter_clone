@@ -1,0 +1,177 @@
+{% extends "layouts/base_layout.html" %}
+{% load i18n %}
+
+{% block title %}{{ profile_user.display_name }} (@{{ profile_user.username }}) / X{% endblock %}
+
+{% block fixed_header %}
+<div class="px-3 border-bottom border-end border-secondary h-100 d-flex flex-column justify-content-center pt-1">
+        <h2 class="fs-6 fw-bold text-truncate mb-0">{{ profile_user.display_name }}</h2>
+        <div class="text-secondary small">
+                {% if request.GET.tab == 'likes' %}
+                いいね
+                {% elif request.GET.tab == 'retweets' %}
+                リツイート
+                {% elif request.GET.tab == 'comments' %}
+                コメント
+                {% else %}
+                ツイート
+                {% endif %}
+                {{ total_count }}
+        </div>
+</div>
+{% endblock %}
+
+{% block header_spacer %}
+<div style="height: 44px;"></div>
+{% endblock %}
+
+{% block main_content %}
+<!-- プロフィールヘッダー -->
+<div class="profile-header position-relative">
+        <!-- ヘッダー画像 -->
+        <div class="header-image" style="height: 200px; background-color: #333;">
+                {% if profile_user.header_image %}
+                <img src="{{ profile_user.header_image.url }}" alt="ヘッダー画像" class="w-100 h-100"
+                        style="object-fit: cover;">
+                {% endif %}
+        </div>
+
+        <!-- プロフィール情報 -->
+        <div class="px-3 pb-3">
+                <div class="d-flex justify-content-between align-items-start">
+                        <!-- プロフィール画像 -->
+                        <div class="profile-image" style="margin-top: -64px;">
+                                {% include "includes/_profile_image.html" with user=profile_user size=128 %}
+                        </div>
+
+<!-- フォローボタン or プロフィール編集ボタン -->
+{% if user == profile_user %}
+<div class="mt-2">
+    <a href="#" class="btn btn-outline-light rounded-pill px-4">プロフィールを編集</a>
+</div>
+{% else %}
+<div class="mt-2">
+    <button class="btn {% if is_following %}btn-outline-light{% else %}btn-light{% endif %} rounded-pill px-4">
+        {% if is_following %}
+        フォロー中
+        {% else %}
+        フォロー
+        {% endif %}
+    </button>
+</div>
+{% endif %}
+                </div>
+
+                <!-- ユーザー情報 -->
+                <div class="mt-3">
+                        <h1 class="fs-4 fw-bold mb-0" style="word-wrap: break-word;">{{ profile_user.display_name }}
+                        </h1>
+                        <div class="text-secondary" style="word-wrap: break-word;">@{{ profile_user.username }}</div>
+                </div>
+
+                <!-- プロフィール詳細 -->
+                {% if profile_user.bio %}
+                <div class="mt-3">
+                        {{ profile_user.bio }}
+                </div>
+                {% endif %}
+
+                <!-- プロフィール詳細 -->
+                <div class="mt-2 text-secondary">
+                        {% if profile_user.location %}
+                        <div class="d-block d-md-inline me-md-3 mb-2 mb-md-0">
+                                <i class="bi bi-geo-alt"></i>
+                                {{ profile_user.location }}
+                        </div>
+                        {% endif %}
+
+                        {% if profile_user.website %}
+                        <div class="d-block d-md-inline me-md-3 mb-2 mb-md-0">
+                                <i class="bi bi-link-45deg"></i>
+                                <a href="{{ profile_user.website }}" class="text-primary text-decoration-none"
+                                        target="_blank" style="word-wrap: break-word; word-break: break-all;">
+                                        {{ profile_user.website }}
+                                </a>
+                        </div>
+                        {% endif %}
+
+                        {% if profile_user.date_of_birth %}
+                        <div class="d-block d-md-inline me-md-3 mb-2 mb-md-0">
+                                <i class="bi bi-balloon"></i>
+                                {{ profile_user.date_of_birth|date:"Y年n月j日生まれ" }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-2">
+                                <i class="bi bi-calendar3"></i>
+                                {{ profile_user.date_joined|date:"Y年n月" }}からX（旧Twitter）を利用しています
+                        </div>
+                </div>
+
+                <!-- フォロー/フォロワー -->
+                <div class="mt-3">
+                        <a href="#" class="text-decoration-none me-3">
+                                <span class="text-white fw-bold">{{ following_count }}</span>
+                                <span class="text-secondary">フォロー中</span>
+                        </a>
+                        <a href="#" class="text-decoration-none">
+                                <span class="text-white fw-bold">{{ followers_count }}</span>
+                                <span class="text-secondary">フォロワー</span>
+                        </a>
+                </div>
+        </div>
+</div>
+
+<!-- タブナビゲーション -->
+<div class="border-bottom border-secondary">
+        <div class="d-flex">
+                <a href="{% url 'tweets:profile' username=profile_user.username %}"
+                        class="flex-grow-1 text-center text-decoration-none py-3 {% if not request.GET.tab %}tab-border-primary{% endif %}">
+                        <span
+                                class="{% if not request.GET.tab %}text-white fw-bold{% else %}text-secondary{% endif %}">ツイート</span>
+                </a>
+                <a href="{% url 'tweets:profile' username=profile_user.username %}?tab=likes"
+                        class="flex-grow-1 text-center text-decoration-none py-3 {% if request.GET.tab == 'likes' %}tab-border-primary{% endif %}">
+                        <span
+                                class="{% if request.GET.tab == 'likes' %}text-white fw-bold{% else %}text-secondary{% endif %}">いいね</span>
+                </a>
+                <a href="{% url 'tweets:profile' username=profile_user.username %}?tab=retweets"
+                        class="flex-grow-1 text-center text-decoration-none py-3 {% if request.GET.tab == 'retweets' %}tab-border-primary{% endif %}">
+                        <span
+                                class="{% if request.GET.tab == 'retweets' %}text-white fw-bold{% else %}text-secondary{% endif %}">リツイート</span>
+                </a>
+                <a href="{% url 'tweets:profile' username=profile_user.username %}?tab=comments"
+                        class="flex-grow-1 text-center text-decoration-none py-3 {% if request.GET.tab == 'comments' %}tab-border-primary{% endif %}">
+                        <span
+                                class="{% if request.GET.tab == 'comments' %}text-white fw-bold{% else %}text-secondary{% endif %}">コメント</span>
+                </a>
+        </div>
+</div>
+
+<!-- ツイート一覧 -->
+<div class="tweet-list">
+        {% for tweet in tweets %}
+        {% include "includes/_tweet_card.html" with tweet=tweet %}
+        {% empty %}
+        <div class="p-3 text-center text-secondary">
+                {% if request.GET.tab == 'likes' %}
+                いいねしたツイートはありません
+                {% elif request.GET.tab == 'retweets' %}
+                リツイートしたツイートはありません
+                {% elif request.GET.tab == 'comments' %}
+                コメントしたツイートはありません
+                {% else %}
+                ツイートはありません
+                {% endif %}
+        </div>
+        {% endfor %}
+</div>
+
+<!-- ページネーション -->
+{% if tweets %}
+{% include "includes/_pagination.html" with page_obj=tweets %}
+{% endif %}
+{% endblock %}
+
+{% block right_sidebar %}
+{% endblock %}
