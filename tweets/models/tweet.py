@@ -26,3 +26,19 @@ class Tweet(models.Model):
 
         following_users = user.following.values_list('followee', flat=True)
         return cls.objects.select_related('user').filter(user_id__in=following_users)
+
+    @classmethod
+    def get_user_timeline(cls, user):
+        return cls.objects.filter(user=user).select_related('user')
+
+    @classmethod
+    def get_liked_by(cls, user):
+        return cls.objects.filter(likes__user=user).select_related('user')
+
+    @classmethod
+    def get_retweeted_by(cls, user):
+        return cls.objects.filter(retweets__user=user).select_related('user')
+
+    @classmethod
+    def get_commented_by(cls, user):
+        return cls.objects.filter(comments__user=user).select_related('user')
