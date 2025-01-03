@@ -41,4 +41,4 @@ class Tweet(models.Model):
 
     @classmethod
     def get_commented_by(cls, user):
-        return cls.objects.filter(comments__user=user).select_related('user')
+        return cls.objects.filter(comments__user=user).distinct().select_related('user')
