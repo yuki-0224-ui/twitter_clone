@@ -13,13 +13,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments'
     )
-    parent_comment = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='replies'
-    )
     content = models.CharField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

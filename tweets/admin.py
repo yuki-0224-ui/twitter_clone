@@ -54,14 +54,9 @@ class RetweetAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'tweet', 'content_preview', 'created_at')
-    search_fields = ('content', 'user__username', 'tweet__content')
-    fields = ('id', 'user', 'tweet', 'parent_comment', 'content')
-    readonly_fields = ('id',)
-
-    def content_preview(self, obj):
-        return obj.content[:50] + '...' if len(obj.content) > 50 else obj.content
-    content_preview.short_description = 'コメント内容'
+    list_display = ('user', 'tweet', 'content', 'created_at')
+    search_fields = ('user__username', 'content')
+    readonly_fields = ('created_at', 'updated_at')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
