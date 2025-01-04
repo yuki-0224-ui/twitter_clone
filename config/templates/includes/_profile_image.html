@@ -1,7 +1,9 @@
-<a href="{% url 'tweets:profile' username=user.username %}" class="text-decoration-none">
-    {% if user.profile_image %}
-    <img src="{{ user.profile_image.url }}" class="rounded-circle" width="{{ size }}" height="{{ size }}" alt="プロフィール画像">
-    {% else %}
-    <div class="rounded-circle bg-secondary" style="width: {{ size }}px; height: {{ size }}px;"></div>
-    {% endif %}
+<a href="{% url 'tweets:profile' username=user.username %}" class="text-decoration-none d-block">
+        {% if user.profile_image %}
+        <div class="rounded-circle overflow-hidden" style="width: {{ size }}px; height: {{ size }}px;">
+                <img src="{{ user.profile_image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="プロフィール画像">
+        </div>
+        {% else %}
+        <div class="rounded-circle bg-secondary" style="width: {{ size }}px; height: {{ size }}px;"></div>
+        {% endif %}
 </a>

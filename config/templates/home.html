@@ -48,16 +48,7 @@
                                 <div class="d-flex">
                                         <!-- プロフィール画像部分 -->
                                         <div class="me-3">
-                                                <a href="{% url 'tweets:profile' username=user.username %}"
-                                                        class="text-decoration-none">
-                                                        {% if user.profile_image %}
-                                                        <img src="{{ user.profile_image.url }}" class="rounded-circle"
-                                                                width="48" height="48" alt="プロフィール画像">
-                                                        {% else %}
-                                                        <div class="rounded-circle bg-secondary"
-                                                                style="width: 48px; height: 48px;"></div>
-                                                        {% endif %}
-                                                </a>
+                                                {% include "includes/_profile_image.html" with user=user size=48 %}
                                         </div>
                                         <div class="flex-grow-1">
                                                 <textarea class="form-control bg-black text-white border-0" rows="3"
