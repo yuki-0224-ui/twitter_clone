@@ -1,0 +1,166 @@
+{% extends "layouts/base_layout.html" %}
+{% load i18n %}
+
+{% block title %}プロフィールを編集 / X{% endblock %}
+
+{% block fixed_header %}
+<div class="px-3 border-bottom border-end border-secondary d-flex align-items-center" style="height: 40px;">
+        <h2 class="fs-6 fw-bold mb-0">プロフィールを編集</h2>
+</div>
+{% endblock %}
+
+{% block header_spacer %}
+<div style="height: 40px;"></div>
+{% endblock %}
+
+{% block main_content %}
+<form method="post" enctype="multipart/form-data" class="p-3">
+        {% csrf_token %}
+
+        <!-- エラーメッセージ表示エリア（ヘッダー/プロフィール画像） -->
+        {% if form.header_image.errors %}
+        <div class="alert alert-danger py-2 mb-3" role="alert">
+                <strong>ヘッダー画像:</strong>
+                {% for error in form.header_image.errors %}
+                <small class="d-block">{{ error }}</small>
+                {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if form.profile_image.errors %}
+        <div class="alert alert-danger py-2 mb-3" role="alert">
+                <strong>プロフィール画像:</strong>
+                {% for error in form.profile_image.errors %}
+                <small class="d-block">{{ error }}</small>
+                {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ヘッダー画像プレビュー -->
+        <div class="position-relative mb-4">
+                <div class="header-image" style="height: 200px; background-color: #333;">
+                        {% if user.header_image %}
+                        <img src="{{ user.header_image.url }}" alt="ヘッダー画像" class="w-100 h-100"
+                                style="object-fit: cover;" id="header-preview">
+                        {% else %}
+                        <div class="w-100 h-100" id="header-preview"></div>
+                        {% endif %}
+                </div>
+
+                <!-- カメラアイコン -->
+                <div class="position-absolute top-50 start-50 translate-middle">
+                        <label for="{{ form.header_image.id_for_label }}"
+                                class="btn btn-dark bg-black bg-opacity-50 rounded-circle p-2">
+                                <i class="bi bi-camera fs-5"></i>
+                        </label>
+                        {{ form.header_image }}
+                </div>
+        </div>
+
+        <!-- プロフィール画像プレビュー -->
+        <div class="position-relative mb-4" style="margin-top: -64px; margin-left: 16px;">
+                <div class="profile-image-container position-relative rounded-circle bg-black p-1"
+                        style="width: 128px; height: 128px;">
+                        {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}" alt="プロフィール画像" class="rounded-circle w-100 h-100"
+                                style="object-fit: cover;" id="profile-preview">
+                        {% else %}
+                        <div class="rounded-circle bg-secondary w-100 h-100" id="profile-preview"></div>
+                        {% endif %}
+
+                        <!-- カメラアイコン -->
+                        <div class="position-absolute top-50 start-50 translate-middle">
+                                <label for="{{ form.profile_image.id_for_label }}"
+                                        class="btn btn-dark bg-black bg-opacity-50 rounded-circle p-2">
+                                        <i class="bi bi-camera fs-5"></i>
+                                </label>
+                                {{ form.profile_image }}
+                        </div>
+                </div>
+        </div>
+
+        <!-- フォームフィールド -->
+        {% for field in form %}
+        {% if field.name != 'profile_image' and field.name != 'header_image' %}
+        {% include "includes/_form_field.html" with field=field %}
+        {% endif %}
+        {% endfor %}
+
+        <!-- 送信ボタン -->
+        <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        保存
+                </button>
+        </div>
+</form>
+{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<style>
+        #id_profile_image,
+        #id_header_image {
+                display: none;
+        }
+
+        .btn-dark {
+                width: 42px;
+                height: 42px;
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+        }
+
+        .btn-dark .bi-camera {
+                font-size: 1.25rem;
+        }
+
+        .btn-dark:hover {
+                opacity: 0.8;
+        }
+
+        .alert {
+                margin-top: 0;
+                margin-bottom: 1rem;
+                font-size: 0.875rem;
+        }
+
+        .alert-danger {
+                background-color: rgba(220, 53, 69, 0.9);
+                color: white;
+                border: none;
+        }
+
+        .alert-danger strong {
+                font-size: 0.9rem;
+        }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+        function handleImagePreview(inputId, previewId, isProfileImage = false) {
+                document.getElementById(inputId).addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                        const preview = document.getElementById(previewId);
+                                        preview.src = e.target.result;
+                                        preview.classList.add('w-100', 'h-100');
+                                        if (isProfileImage) {
+                                                preview.classList.add('rounded-circle');
+                                                preview.classList.remove('bg-secondary');
+                                        }
+                                        preview.style.objectFit = 'cover';
+                                }
+                                reader.readAsDataURL(file);
+                        }
+                });
+        }
+
+        handleImagePreview('id_header_image', 'header-preview', false);
+        handleImagePreview('id_profile_image', 'profile-preview', true);
+</script>
+{% endblock %}
