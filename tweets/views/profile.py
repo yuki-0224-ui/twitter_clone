@@ -1,8 +1,11 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, UpdateView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from tweets.models import Tweet
+from tweets.forms import ProfileEditForm
+from django.urls import reverse_lazy
+from django.contrib import messages
 
 User = get_user_model()
 
@@ -57,4 +60,17 @@ class ProfileView(LoginRequiredMixin, DetailView):
         return Tweet.get_user_timeline(user)
 
 
+class ProfileEditView(LoginRequiredMixin, UpdateView):
+    form_class = ProfileEditForm
+    template_name = 'profile_edit.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        messages.success(self.request, 'プロフィールを更新しました')
+        return reverse_lazy('tweets:profile', kwargs={'username': self.request.user.username})
+
+
 profile = ProfileView.as_view()
+profile_edit = ProfileEditView.as_view()
