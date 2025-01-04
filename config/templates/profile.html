@@ -47,7 +47,7 @@
 <!-- フォローボタン or プロフィール編集ボタン -->
 {% if user == profile_user %}
 <div class="mt-2">
-    <a href="#" class="btn btn-outline-light rounded-pill px-4">プロフィールを編集</a>
+    <a href="{% url 'tweets:profile_edit' %}" class="btn btn-outline-light rounded-pill px-4">プロフィールを編集</a>
 </div>
 {% else %}
 <div class="mt-2">
