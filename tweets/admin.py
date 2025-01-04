@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Tweet, Follow
+from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment
 
 
 class CustomUserAdmin(UserAdmin):
@@ -34,6 +34,29 @@ class FollowAdmin(admin.ModelAdmin):
     search_fields = ('follower__username', 'followee__username')
     fields = ('id', 'follower', 'followee')
     readonly_fields = ('id',)
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'tweet', 'created_at')
+    search_fields = ('user__username', 'tweet__content')
+    fields = ('id', 'user', 'tweet')
+    readonly_fields = ('id',)
+
+
+@admin.register(Retweet)
+class RetweetAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'tweet', 'created_at')
+    search_fields = ('user__username', 'tweet__content')
+    fields = ('id', 'user', 'tweet')
+    readonly_fields = ('id',)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'tweet', 'content', 'created_at')
+    search_fields = ('user__username', 'content')
+    readonly_fields = ('created_at', 'updated_at')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

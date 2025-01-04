@@ -4,10 +4,9 @@
                 {% if page_obj.has_previous %}
                 <li class="page-item">
                         <a class="page-link bg-transparent text-primary border-0"
-                                href="?page={{ page_obj.previous_page_number }}&tab={{ current_tab }}">前へ</a>
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">前へ</a>
                 </li>
                 {% endif %}
-
                 {% for num in page_obj.paginator.get_elided_page_range %}
                 {% if num == page_obj.number %}
                 <li class="page-item active">
@@ -20,15 +19,14 @@
                 {% else %}
                 <li class="page-item">
                         <a class="page-link bg-transparent text-primary border-0"
-                                href="?page={{ num }}&tab={{ current_tab }}">{{ num }}</a>
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
                 </li>
                 {% endif %}
                 {% endfor %}
-
                 {% if page_obj.has_next %}
                 <li class="page-item">
                         <a class="page-link bg-transparent text-primary border-0"
-                                href="?page={{ page_obj.next_page_number }}&tab={{ current_tab }}">次へ</a>
+                                href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">次へ</a>
                 </li>
                 {% endif %}
         </ul>
