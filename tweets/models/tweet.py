@@ -5,7 +5,12 @@ from django.conf import settings
 class Tweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, related_name='tweets')
-    content = models.CharField(max_length=140)
+    content = models.CharField(max_length=140, blank=True, null=True)
+    image = models.ImageField(
+        upload_to='tweet_images/',
+        blank=True,
+        null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -13,7 +18,14 @@ class Tweet(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.user.username}: {self.content[:30]}'
+        text = f'{self.user.username}: '
+        if self.content and self.image:
+            return text + f'{self.content[:30]} [画像付き]'
+        elif self.content:
+            return text + self.content[:30]
+        elif self.image:
+            return text + '[画像のみの投稿]'
+        return text + '[投稿なし]'
 
     @classmethod
     def get_timeline_for_user(cls):
