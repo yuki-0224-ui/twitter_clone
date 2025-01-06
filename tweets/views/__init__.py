@@ -1,6 +1,6 @@
 from .home import home
 from .auth import login, signup, logout
-from .profile import profile
+from .profile import profile, profile_edit
 
 __all__ = [
     'home',
@@ -8,4 +8,5 @@ __all__ = [
     'signup',
     'logout',
     'profile',
+    'profile_edit',
 ]
