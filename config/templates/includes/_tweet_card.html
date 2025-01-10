@@ -30,6 +30,18 @@
                      class="tweet-image">
             </div>
             {% endif %}
+
+            <!-- 投稿日時（詳細ページの場合のみ） -->
+            {% if is_detail %}
+            <div class="text-secondary small">
+                <div class="d-flex py-2 mb-2 border-bottom border-secondary">
+                  {{ tweet.created_at|date:"G:i" }} · {{ tweet.created_at|date:"Y年n月j日" }}
+                  {% if tweet.retweet_count > 0 %}
+                          · <span class="ms-1">{{ tweet.retweet_count }}件の表示</span>
+                  {% endif %}
+                </div>
+            </div>
+            {% endif %}
             
             <!-- インタラクションボタン -->
             <div class="d-flex justify-content-between align-items-center w-100 position-relative">

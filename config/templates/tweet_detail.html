@@ -11,7 +11,7 @@
 {% endblock %}
 {% block main_content %}
 <!-- メインツイート表示 -->
-{% include "includes/_tweet_card.html" with tweet=tweet %}
+{% include "includes/_tweet_card.html" with tweet=tweet is_detail=True %}
 <!-- 返信投稿フォーム -->
 <div class="p-3 border-bottom border-secondary">
         <form method="post">
