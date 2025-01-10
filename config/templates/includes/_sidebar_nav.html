@@ -1,3 +1,4 @@
+
 {% load static %}
 <nav class="nav flex-column pt-3">
         <!-- ホームメニュー -->
@@ -6,47 +7,41 @@
                 <i class="bi bi-house{% if request.resolver_match.url_name == 'home' %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">ホーム</span>
         </a>
-
         <!-- 通知メニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active{% endif %} fs-5 mb-2"
                 href="#">
-                <i
-                        class="bi bi-bell{% if request.resolver_match.url_name == 'notifications' %}-fill{% endif %} me-2"></i>
+                <i class="bi bi-bell{% if request.resolver_match.url_name == 'notifications' %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">通知</span>
         </a>
-
         <!-- メッセージメニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'messages' %}active{% endif %} fs-5 mb-2" href="#">
-                <i
-                        class="bi bi-envelope{% if request.resolver_match.url_name == 'messages' %}-fill{% endif %} me-2"></i>
+                <i class="bi bi-envelope{% if request.resolver_match.url_name == 'messages' %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">メッセージ</span>
         </a>
-
         <!-- ブックマークメニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'bookmarks' %}active{% endif %} fs-5 mb-2" href="#">
-                <i
-                        class="bi bi-bookmark{% if request.resolver_match.url_name == 'bookmarks' %}-fill{% endif %} me-2"></i>
+                <i class="bi bi-bookmark{% if request.resolver_match.url_name == 'bookmarks' %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">ブックマーク</span>
         </a>
-
         <!-- プロフィールメニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'profile' and request.resolver_match.kwargs.username == user.username %}active{% endif %} fs-5 mb-4"
                 href="{% url 'tweets:profile' username=user.username %}">
-                <i
-                        class="bi bi-person{% if request.resolver_match.url_name == 'profile' and request.resolver_match.kwargs.username == user.username %}-fill{% endif %} me-2"></i>
+                <i class="bi bi-person{% if request.resolver_match.url_name == 'profile' and request.resolver_match.kwargs.username == user.username %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">プロフィール</span>
         </a>
 
-        <!-- ポスト作成ボタン -->
-        <div class="px-3 w-100 mb-5">
-            <label for="post-textarea" class="btn btn-primary rounded-pill w-100 d-none d-md-block">
-                ポストする
+        <!-- ポスト作成ボタン（ホームページの時だけ表示） -->
+        {% if request.resolver_match.url_name == 'home' %}
+            <div class="px-3 w-100 mb-5">
+                <label for="post-textarea" class="btn btn-primary rounded-pill w-100 d-none d-md-block">
+                    ポストする
+                </label>
+            </div>
+            <label for="post-textarea" class="btn btn-primary rounded-circle p-2 d-md-none"
+                style="width: 40px; height: 40px; margin-left: 8px;">
+                <i class="bi bi-plus-lg"></i>
             </label>
-        </div>
-        <label for="post-textarea" class="btn btn-primary rounded-circle p-2 d-md-none"
-            style="width: 40px; height: 40px; margin-left: 8px;">
-            <i class="bi bi-plus-lg"></i>
-        </label>
+        {% endif %}
 
         <!-- ユーザー情報 -->
         <div class="mb-3 mt-5 ms-2">
@@ -62,22 +57,20 @@
                         </div>
                 </a>
         </div>
-
         <style>
                 .nav-link {
                         color: #fff !important;
                         opacity: 0.8;
                         transition: all 0.2s ease;
                 }
-
                 .nav-link:hover {
                         opacity: 1;
                         background-color: rgba(255, 255, 255, 0.1);
                         border-radius: 9999px;
                 }
-
                 .nav-link.active {
                         opacity: 1;
                         font-weight: 600;
                 }
         </style>
+</nav>
