@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Count, Q
 
 
 class Tweet(models.Model):
@@ -28,29 +29,20 @@ class Tweet(models.Model):
         return text + '[投稿なし]'
 
     @classmethod
-    def get_timeline_for_user(cls):
-        return cls.objects.select_related('user').all()
+    def with_like_details(cls, user):
+        if not user or not user.is_authenticated:
+            return cls.objects.none()
+
+        return cls.objects.select_related('user').annotate(
+            likes_count=Count('likes', distinct=True),
+            liked_by_user=Count('likes', filter=Q(likes__user=user))
+        ).order_by('-created_at')
+
+    @classmethod
+    def get_timeline_for_user(cls, user):
+        return cls.with_like_details(user)
 
     @classmethod
     def get_following_timeline_for_user(cls, user):
-        if not user:
-            return cls.objects.none()
-
         following_users = user.following.values_list('followee', flat=True)
-        return cls.objects.select_related('user').filter(user_id__in=following_users)
-
-    @classmethod
-    def get_user_timeline(cls, user):
-        return cls.objects.filter(user=user).select_related('user')
-
-    @classmethod
-    def get_liked_by(cls, user):
-        return cls.objects.filter(likes__user=user).select_related('user')
-
-    @classmethod
-    def get_retweeted_by(cls, user):
-        return cls.objects.filter(retweets__user=user).select_related('user')
-
-    @classmethod
-    def get_commented_by(cls, user):
-        return cls.objects.filter(comments__user=user).distinct().select_related('user')
+        return cls.with_like_details(user).filter(user_id__in=following_users)
