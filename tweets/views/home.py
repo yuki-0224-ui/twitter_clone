@@ -21,7 +21,7 @@ class HomeView(ListView):
         tab = self.get_tab()
         if tab == self.TAB_FOLLOWING:
             return Tweet.get_following_timeline_for_user(self.request.user)
-        return Tweet.get_timeline_for_user()
+        return Tweet.get_timeline_for_user(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
