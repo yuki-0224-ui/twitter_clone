@@ -48,16 +48,16 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
         return context
 
-    def _get_tweets_for_tab(self, user, tab):
-        if tab == self.TAB_TWEETS:
-            return Tweet.get_user_timeline(user)
-        elif tab == self.TAB_LIKES:
-            return Tweet.get_liked_by(user)
-        elif tab == self.TAB_RETWEETS:
-            return Tweet.get_retweeted_by(user)
-        elif tab == self.TAB_COMMENTS:
-            return Tweet.get_commented_by(user)
-        return Tweet.get_user_timeline(user)
+    def _get_tweets_for_tab(self, profile_user, tab):
+        tab_filters = {
+            self.TAB_TWEETS: {'user': profile_user},
+            self.TAB_LIKES: {'likes__user': profile_user},
+            self.TAB_RETWEETS: {'retweets__user': profile_user},
+            self.TAB_COMMENTS: {'comments__user': profile_user}
+        }
+
+        filter_kwargs = tab_filters.get(tab, {'user': profile_user})
+        return Tweet.with_like_details(self.request.user).filter(**filter_kwargs)
 
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):
