@@ -56,9 +56,15 @@
 
                 <!-- リツイートボタン -->
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-ghost p-1 position-relative">
-                        <i class="bi bi-repeat"></i>
-                    </button>
+                    <form method="post" action="{% url 'tweets:retweet' pk=tweet.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-ghost p-1 position-relative retweet-button {% if tweet.retweeted_by_user %}active{% endif %}">
+                            <i class="bi bi-repeat"></i>
+                            {% if tweet.retweets_count > 0 %}
+                                <span class="retweet-count ms-1">{{ tweet.retweets_count }}</span>
+                            {% endif %}
+                        </button>
+                    </form>
                 </div>
 
                 <!-- いいねボタン -->
@@ -136,18 +142,24 @@
         }
     }
 
-    .btn-ghost {
+    /* ボタンとアイコンのスタイル */
+    .btn-ghost,
+    .btn-ghost i {
         border: none;
         color: #71767b;
         z-index: 2;
     }
     
-    .like-button.active {
+    /* いいねボタンのスタイル */
+    .like-button.active,
+    .like-button.active i {
         color: #f91880;
     }
-    
-    .like-button .bi-heart-fill {
-        color: #f91880;
+
+    /* リツイートボタンのスタイル */
+    .retweet-button.active,
+    .retweet-button.active i {
+        color: #00ba7c;
     }
 
     /* 全体リンク用のスタイル */
