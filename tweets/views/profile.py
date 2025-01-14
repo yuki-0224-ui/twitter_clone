@@ -57,7 +57,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
         }
 
         filter_kwargs = tab_filters.get(tab, {'user': profile_user})
-        return Tweet.with_like_details(self.request.user).filter(**filter_kwargs)
+        return Tweet.with_interaction_details(self.request.user).filter(**filter_kwargs)
 
 
 class ProfileEditView(LoginRequiredMixin, UpdateView):

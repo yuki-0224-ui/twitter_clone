@@ -12,7 +12,7 @@ class TweetDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'tweet'
 
     def get_queryset(self):
-        return Tweet.with_like_details(self.request.user)
+        return Tweet.with_interaction_details(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
