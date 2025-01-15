@@ -11,4 +11,5 @@ urlpatterns = [
     path('settings/profile/', views.profile_edit, name='profile_edit'),
     path('tweet/<int:pk>/', views.tweet_detail, name='tweet_detail'),
     path('tweet/<int:pk>/like/', views.like_tweet, name='like_tweet'),
+    path('tweet/<int:pk>/retweet/', views.retweet_tweet, name='retweet'),
 ]
