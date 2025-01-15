@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from tweets.models import Tweet
 from tweets.forms import TweetForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 class HomeView(ListView):
@@ -22,6 +23,16 @@ class HomeView(ListView):
         if tab == self.TAB_FOLLOWING:
             return Tweet.get_following_timeline_for_user(self.request.user)
         return Tweet.get_timeline_for_user(self.request.user)
+
+    def paginate_queryset(self, queryset, page_size):
+        paginator = Paginator(queryset, page_size)
+        try:
+            page_number = self.request.GET.get('page', 1)
+            page_obj = paginator.page(page_number)
+        except (EmptyPage, PageNotAnInteger):
+            page_obj = paginator.page(1)
+
+        return (paginator, page_obj, page_obj.object_list, page_obj.has_other_pages())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
