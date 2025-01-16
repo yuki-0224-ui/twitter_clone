@@ -107,9 +107,12 @@
 
                 <!-- ブックマークボタン -->
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-ghost p-1">
-                        <i class="bi bi-bookmark"></i>
-                    </button>
+                    <form method="post" action="{% url 'tweets:bookmark' pk=tweet.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-ghost p-1 position-relative bookmark-button {% if tweet.bookmarked_by_user %}active{% endif %}">
+                            <i class="bi bi-bookmark{% if tweet.bookmarked_by_user %}-fill{% endif %}"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
             {% endif %}
@@ -185,6 +188,12 @@
     .retweet-button.active,
     .retweet-button.active i {
         color: #00ba7c;
+    }
+
+    /* ブックマークボタンのスタイル */
+    .bookmark-button.active,
+    .bookmark-button.active i {
+        color: #1d9bf0;
     }
 
     /* 全体リンク用のスタイル */
