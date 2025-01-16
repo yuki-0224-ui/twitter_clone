@@ -5,6 +5,7 @@ from .tweet import tweet_detail
 from .like import like_tweet
 from .retweet import retweet_tweet
 from .follow import follow_user
+from .bookmark import bookmark_tweet, bookmark_list
 
 __all__ = [
     'home',
@@ -17,4 +18,6 @@ __all__ = [
     'like_tweet',
     'retweet_tweet',
     'follow_user',
+    'bookmark_tweet',
+    'bookmark_list',
 ]
