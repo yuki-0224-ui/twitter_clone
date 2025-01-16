@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
-from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment
+from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment, Bookmark
 
 
 class CustomUserAdmin(UserAdmin):
@@ -29,14 +29,12 @@ class TweetAdmin(admin.ModelAdmin):
         if not obj.content:
             return "画像のみの投稿"
         return obj.content[:50] + '...' if len(obj.content) > 50 else obj.content
-
     content_preview.short_description = 'ツイート内容'
 
     def image_preview(self, obj):
         if obj.image:
             return format_html('<img src="{}" style="max-height: 50px;"/>', obj.image.url)
         return "画像なし"
-
     image_preview.short_description = '画像プレビュー'
 
 
@@ -69,6 +67,14 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('user', 'tweet', 'content', 'created_at')
     search_fields = ('user__username', 'content')
     readonly_fields = ('created_at', 'updated_at')
+
+
+@admin.register(Bookmark)
+class BookmarkAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'tweet', 'created_at')
+    search_fields = ('user__username', 'tweet__content')
+    fields = ('id', 'user', 'tweet')
+    readonly_fields = ('id', 'created_at', 'updated_at')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
