@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.db.models import Count, Q, OuterRef
+from django.db.models import Count, Q, OuterRef, Exists
 from django.db.models.functions import Coalesce
 
 
@@ -35,11 +35,18 @@ class Tweet(models.Model):
             return cls.objects.none()
 
         # 集計に影響を与えないために、サブクエリを使って取得
-        from tweets.models import Retweet
+        from tweets.models import Retweet, Follow
         latest_retweet = models.Subquery(
             Retweet.objects.filter(
                 tweet=OuterRef('pk')
             ).order_by('-created_at').values('created_at')[:1]
+        )
+
+        following_exists = Exists(
+            Follow.objects.filter(
+                follower=user,
+                followee=OuterRef('user')
+            )
         )
 
         return cls.objects.select_related('user').annotate(
@@ -58,6 +65,7 @@ class Tweet(models.Model):
                 filter=Q(retweets__user=user),
                 distinct=True
             ),
+            is_following=following_exists,
             last_retweet_at=latest_retweet,
             effective_date=Coalesce('last_retweet_at', 'created_at')
         ).order_by('-effective_date', '-created_at')
