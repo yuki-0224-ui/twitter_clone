@@ -65,6 +65,11 @@ class Tweet(models.Model):
                 filter=Q(retweets__user=user),
                 distinct=True
             ),
+            bookmarked_by_user=Count(
+                'bookmarks',
+                filter=Q(bookmarks__user=user),
+                distinct=True
+            ),
             is_following=following_exists,
             last_retweet_at=latest_retweet,
             effective_date=Coalesce('last_retweet_at', 'created_at')

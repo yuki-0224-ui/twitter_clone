@@ -4,6 +4,7 @@ from .follow import Follow
 from .like import Like
 from .retweet import Retweet
 from .comment import Comment
+from .bookmark import Bookmark
 
 __all__ = [
     'CustomUser',
@@ -12,4 +13,5 @@ __all__ = [
     'Like',
     'Retweet',
     'Comment',
+    'Bookmark',
 ]

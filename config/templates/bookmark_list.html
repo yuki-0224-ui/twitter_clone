@@ -1,0 +1,26 @@
+{% extends "layouts/base_layout.html" %}
+{% load i18n %}
+
+{% block title %}ブックマーク / X{% endblock %}
+
+{% block fixed_header %}
+<div class="px-3 border-bottom border-end border-secondary d-flex align-items-center" style="height: 40px;">
+        <h2 class="fs-6 fw-bold mb-0">ブックマーク</h2>
+</div>
+{% endblock %}
+
+{% block header_spacer %}
+<div style="height: 40px;"></div>
+{% endblock %}
+
+{% block main_content %}
+{% for tweet in tweets %}
+{% include "includes/_tweet_card.html" with tweet=tweet %}
+{% empty %}
+<div class="p-3 text-center text-secondary">
+        ブックマークはありません
+</div>
+{% endfor %}
+
+{% include "includes/_pagination.html" %}
+{% endblock %}
