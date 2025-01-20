@@ -11,14 +11,15 @@
             </div>
         </div>
         
-        <!-- メインコンテンツ -->
-        <div class="col-10 col-md-6 min-vh-100 border-end border-secondary position-relative px-0">
+        <!-- メインコンテンツ (メッセージ画面では幅を調整) -->
+        <div class="{% if request.resolver_match.url_name == 'messages' %}col-4 d-md-block col-icon-only col-md-4{% else %}col-10 col-md-6{% endif %} min-vh-100 border-end border-secondary position-relative px-0">
             <!-- 固定ヘッダー -->
             <div class="position-fixed bg-black border-bottom border-secondary"
                  style="z-index: 1000; width: inherit; max-width: inherit;">
                 {% block fixed_header %}{% endblock %}
             </div>
-<!-- スペーサー (固定ヘッダーの高さ分) -->
+
+            <!-- スペーサー (固定ヘッダーの高さ分) -->
             {% block header_spacer %}
             <div style="height: 53px;"></div>
             {% endblock %}
@@ -31,8 +32,8 @@
             </div>
         </div>
 
-        <!-- 右サイドバー -->
-        <div class="col-md-3 d-none d-md-block border-end border-secondary">
+        <!-- 右サイドバー (メッセージ画面では常に表示) -->
+        <div class="{% if request.resolver_match.url_name == 'messages' %}col-8 col-md-5{% else %}d-none d-md-block col-md-3{% endif %} border-end border-secondary">
             {% block right_sidebar %}
             <!-- 各ページで右サイドバーの内容を実装 -->
             {% endblock %}
@@ -46,6 +47,12 @@
 <style>
     .tab-border-primary {
         border-bottom: 2px solid rgb(29, 155, 240) !important;
+    }
+
+    @media (max-width: 768px) {
+        .col-icon-only {
+            width: 80px !important;
+        }
     }
 </style>
 {% endblock %}
