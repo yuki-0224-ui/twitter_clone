@@ -33,6 +33,14 @@
                                 </button>
                             </form>
                         </li>
+                        <li>
+                            <form action="{% url 'tweets:create_message_room' username=tweet.user.username %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="dropdown-item text-white">
+                                    メッセージを送信
+                                </button>
+                            </form>
+                        </li>
                         {% endif %}
                     </ul>
                 </div>
