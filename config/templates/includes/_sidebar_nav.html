@@ -13,7 +13,7 @@
                 <span class="d-none d-md-inline">通知</span>
         </a>
         <!-- メッセージメニュー -->
-        <a class="nav-link {% if request.resolver_match.url_name == 'messages' %}active{% endif %} fs-5 mb-2" href="#">
+        <a class="nav-link {% if request.resolver_match.url_name == 'messages' %}active{% endif %} fs-5 mb-2" href="{% url 'tweets:messages' %}">
                 <i class="bi bi-envelope{% if request.resolver_match.url_name == 'messages' %}-fill{% endif %} me-2"></i>
                 <span class="d-none d-md-inline">メッセージ</span>
         </a>
