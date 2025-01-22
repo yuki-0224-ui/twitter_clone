@@ -15,6 +15,8 @@ urlpatterns = [
     path('tweet/<int:pk>/bookmark/', views.bookmark_tweet, name='bookmark'),
     path('@<str:username>/follow/', views.follow_user, name='follow'),
     path('bookmarks/', views.bookmark_list, name='bookmarks'),
-
+    path('messages/', views.message_room_list, name='messages'),
+    path('messages/new/<str:username>/',
+         views.create_message_room, name='create_message_room'),
 
 ]

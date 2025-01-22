@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
-from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment, Bookmark
+from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment, Bookmark, MessageRoom, Message
 
 
 class CustomUserAdmin(UserAdmin):
@@ -75,6 +75,26 @@ class BookmarkAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'tweet__content')
     fields = ('id', 'user', 'tweet')
     readonly_fields = ('id', 'created_at', 'updated_at')
+
+
+@admin.register(MessageRoom)
+class MessageRoomAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user1', 'user2', 'created_at', 'updated_at')
+    search_fields = ('user1__username', 'user2__username')
+    fields = ('id', 'user1', 'user2', 'created_at', 'updated_at')
+    readonly_fields = ('id', 'created_at', 'updated_at')
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'room', 'sender', 'content_preview', 'created_at')
+    search_fields = ('content', 'sender__username')
+    fields = ('id', 'room', 'sender', 'content', 'created_at')
+    readonly_fields = ('id', 'created_at')
+
+    def content_preview(self, obj):
+        return obj.content[:50] + '...' if len(obj.content) > 50 else obj.content
+    content_preview.short_description = 'メッセージ内容'
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
