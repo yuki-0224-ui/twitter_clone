@@ -2,7 +2,7 @@ from django.views.generic import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.contrib import messages
-from tweets.models import Tweet
+from tweets.models import Tweet, Notification
 from tweets.forms import CommentForm
 
 
@@ -29,6 +29,15 @@ class TweetDetailView(LoginRequiredMixin, DetailView):
             comment.user = request.user
             comment.tweet = self.object
             comment.save()
+
+            if request.user != self.object.user:
+                Notification.create_notification(
+                    recipient=self.object.user,
+                    actor=request.user,
+                    notification_type=Notification.COMMENT,
+                    tweet=self.object
+                )
+
             messages.success(request, 'コメントを投稿しました。')
             return redirect('tweets:tweet_detail', pk=self.object.pk)
 
