@@ -50,7 +50,7 @@
 </div>
 <!-- 返信一覧 -->
 {% for comment in comments %}
-{% include "includes/_tweet_card.html" with tweet=comment from_comments=True %}
+{% include "includes/_tweet_card.html" with tweet=comment from_comments=True hide_interactions=True %}
 {% empty %}
 <div class="p-3 text-center text-secondary">
         まだコメントはありません
