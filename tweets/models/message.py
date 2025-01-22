@@ -49,6 +49,9 @@ class MessageRoom(models.Model):
 
     @classmethod
     def create_room_for_users(cls, user1, username):
+        if user1.username == username:
+            return None, None, '自分自身とチャットルームは作成できません'
+
         try:
             other_user = User.objects.get(username=username)
             room = cls.objects.filter(
