@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .notification {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #1d9bf0;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 9999px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>新しい通知があります</h1>
+    
+    <div class="notification">
+        <p>
+            {{ notification.actor.display_name }} さんが
+            {% if notification.notification_type == 'like' %}
+                あなたのツイートをいいねしました
+            {% elif notification.notification_type == 'retweet' %}
+                あなたのツイートをリツイートしました
+            {% elif notification.notification_type == 'comment' %}
+                あなたのツイートにコメントしました
+            {% elif notification.notification_type == 'follow' %}
+                あなたをフォローしました
+            {% endif %}
+        </p>
+        
+        {% if notification.tweet %}
+        <p>対象のツイート：</p>
+        <blockquote>
+            {{ notification.tweet.content }}
+        </blockquote>
+        {% endif %}
+    </div>
+    
+    <a href="http://{{ site.domain }}{% url 'tweets:notifications' %}" class="button">
+        通知を確認する
+    </a>
+</body>
+</html>
