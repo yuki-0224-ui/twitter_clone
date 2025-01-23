@@ -8,9 +8,18 @@
         </a>
         <!-- 通知メニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'notifications' %}active{% endif %} fs-5 mb-2"
-                href="#">
-                <i class="bi bi-bell{% if request.resolver_match.url_name == 'notifications' %}-fill{% endif %} me-2"></i>
+           href="{% url 'tweets:notifications' %}">
+            <div class="d-flex align-items-center">
+                <div class="icon-wrapper position-relative">
+                    <i class="bi bi-bell{% if request.resolver_match.url_name == 'notifications' %}-fill{% endif %} me-2"></i>
+                    {% if unread_notifications_count > 0 %}
+                    <span class="notification-badge">
+                        {{ unread_notifications_count }}
+                    </span>
+                    {% endif %}
+                </div>
                 <span class="d-none d-md-inline">通知</span>
+            </div>
         </a>
         <!-- メッセージメニュー -->
         <a class="nav-link {% if request.resolver_match.url_name == 'messages' %}active{% endif %} fs-5 mb-2" href="{% url 'tweets:messages' %}">
@@ -71,6 +80,31 @@
                 .nav-link.active {
                         opacity: 1;
                         font-weight: 600;
+                }
+                .icon-wrapper {
+                    display: inline-flex;
+                    align-items: center;
+                }
+                .notification-badge {
+                    position: absolute;
+                    background-color: rgb(29, 155, 240);
+                    color: white;
+                    border-radius: 9999px;
+                    font-size: 0.7rem;
+                    min-width: 16px;
+                    height: 16px;
+                    padding: 0 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    top: -5px;
+                    right: 2px;
+                    font-weight: 500;
+                }
+                .nav-link i {
+                    font-size: 1.3rem;
+                    width: 1.5rem;
+                    text-align: center;
                 }
         </style>
 </nav>

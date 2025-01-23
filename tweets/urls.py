@@ -18,5 +18,5 @@ urlpatterns = [
     path('messages/', views.message_room_list, name='messages'),
     path('messages/new/<str:username>/',
          views.create_message_room, name='create_message_room'),
-
+    path('notifications/', views.notification_list, name='notifications'),
 ]

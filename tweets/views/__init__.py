@@ -7,6 +7,7 @@ from .retweet import retweet_tweet
 from .follow import follow_user
 from .bookmark import bookmark_tweet, bookmark_list
 from .message import message_room_list, create_message_room
+from .notification import notification_list
 
 __all__ = [
     'home',
@@ -23,4 +24,5 @@ __all__ = [
     'bookmark_list',
     'message_room_list',
     'create_message_room',
+    'notification_list',
 ]

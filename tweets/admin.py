@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
-from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment, Bookmark, MessageRoom, Message
+from .models import CustomUser, Tweet, Follow, Like, Retweet, Comment, Bookmark, MessageRoom, Message, Notification
 
 
 class CustomUserAdmin(UserAdmin):
@@ -95,6 +95,18 @@ class MessageAdmin(admin.ModelAdmin):
     def content_preview(self, obj):
         return obj.content[:50] + '...' if len(obj.content) > 50 else obj.content
     content_preview.short_description = 'メッセージ内容'
+
+
+@admin.register(Notification)
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('id', 'recipient', 'actor',
+                    'notification_type', 'tweet', 'is_read', 'created_at')
+    list_filter = ('notification_type', 'is_read', 'created_at')
+    search_fields = ('recipient__username',
+                     'actor__username', 'tweet__content')
+    fields = ('id', 'recipient', 'actor', 'notification_type',
+              'tweet', 'is_read', 'created_at')
+    readonly_fields = ('id', 'created_at')
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

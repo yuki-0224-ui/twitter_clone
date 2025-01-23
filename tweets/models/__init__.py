@@ -6,6 +6,7 @@ from .retweet import Retweet
 from .comment import Comment
 from .bookmark import Bookmark
 from .message import Message, MessageRoom
+from .notification import Notification
 
 __all__ = [
     'CustomUser',
@@ -17,4 +18,5 @@ __all__ = [
     'Bookmark',
     'Message',
     'MessageRoom',
+    'Notification',
 ]
