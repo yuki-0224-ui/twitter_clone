@@ -51,7 +51,7 @@
             
             <!-- ツイート本文 -->
             {% if tweet.content %}
-            <div class="mb-3" style="overflow-wrap: break-word; word-break: break-word;">
+            <div class="mb-3" style="overflow-wrap: break-word; word-break: break-word;" data-testid="tweet-content">
                 {{ tweet.content }}
             </div>
             {% endif %}
